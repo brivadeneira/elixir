@@ -30,17 +30,17 @@ class Beer(Drink):
     food_pairing: list[str]
 
     @field_validator("abv")
-    def validate_abv(self, abv: float) -> float:
+    def validate_abv(cls, abv: float) -> float:
         """
         ABV (Alcohol by volume) represents a percentage,
         and its value must be between 0% and 100% -> 0, 1
         """
         if abv < 0 or abv > 1:
             raise ValueError(f"ABV must be a value between 0 and 1, not {abv}")
-        return abv
+        return round(abv, 2)
 
     @field_validator("ibu")
-    def validate_ibu(self, ibu: float) -> float:
+    def validate_ibu(cls, ibu: float) -> float:
         """
         IBU (International Bitterness Unit),
         the maximum "bitterness" value that can be detected by humans is 100 (120 exceptionally),

@@ -45,7 +45,8 @@ repos:
         args: [ --max-line-length=100,
                 --disable=missing-class-docstring,
                 --disable=too-few-public-methods,
-
+                --disable=fixme,
+                --disable=no-self-argument,
         ]
 
   - repo: https://github.com/PyCQA/autoflake

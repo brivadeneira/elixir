@@ -45,7 +45,7 @@ class BeerFactory(factory.Factory):
     tagline = factory.Faker("sentence")
     abv = factory.Faker("pyfloat", min_value=0, max_value=1)
     ibu = factory.Faker("pyint", min_value=0, max_value=1000)
-    food_pairing = factory.List([random.choice(food_names) for _ in range(3)])
+    food_pairing = random.sample(food_names, 3)  # TODO: sublist is not changing with new requests
 
 
 class CocktailFactory(factory.Factory):
