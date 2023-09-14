@@ -42,6 +42,11 @@ repos:
         language: system
         types: [python]
         exclude: ^venv/ ^.git/ ^.idea/ ^.DS_Store/ ^.ipynb_checkpoints
+        args: [ --max-line-length=100,
+                --disable=missing-class-docstring,
+                --disable=too-few-public-methods,
+
+        ]
 
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.1.1
