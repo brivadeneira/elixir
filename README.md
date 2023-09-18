@@ -3,17 +3,22 @@ Proof of concept for the development of a bar API.
 
 > it is an API that provides cocktails and beers.
 
-[![](https://giphy.com/embed/ylzObgDRgAI9JpFgOU)](https://www.youtube.com/embed/LiZIKRgYXxU?si=p7PjcLcZMoYLTOaL)
+[![](https://media1.giphy.com/media/ylzObgDRgAI9JpFgOU/giphy.gif)](https://www.youtube.com/embed/LiZIKRgYXxU?si=p7PjcLcZMoYLTOaL)
+
 *Elixir reference*
 
 ## How to run
+
+```sh
+~$ git clone https://github.com/brivadeneira/elixir.git
+~$ cd elixir
+```
+
 ### docker container
 
 - Clone this repo, build and run the docker image:
 
 ```sh
-~$ git clone
-~$ cd elixir
 ~$ docker build -t elixir .
 ~$ docker run -p 80:80 elixir
 ```
@@ -22,14 +27,14 @@ Proof of concept for the development of a bar API.
 
 ### locally
 ```sh
-~$ git clone
-~$ cd elixir
 ~$ pip install -r requirements.txt
 ~$ python main.py
 ```
 
 ## How to use
 
+- with the base URL: `<IP>`:80
+  - `IP`: `127.0.0.1` running locally, local IP running with docker
 - Request drinks thorugh the endpoints:
     - `/beer`: returns a random beer
     - `/cocktail`: returns a random cocktail
