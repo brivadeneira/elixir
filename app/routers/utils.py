@@ -25,10 +25,10 @@ def get_random_user() -> UserFactory:
     try:
         rand_user_resp = requests.get(RAND_USER_URL, timeout=30)
         rand_user = rand_user_resp.json()["results"][0]
-        user_name, user_timezone = (
-            rand_user["name"]["first"],
-            rand_user["location"]["timezone"]["description"],
-        )
+
+        user_name = rand_user["name"]["first"]
+        user_timezone = rand_user["location"]["timezone"]["description"]
+
         return UserFactory(name=user_name, timezone=user_timezone)
     except (ConnectionError, HTTPError, Timeout, TooManyRedirects, KeyError):
         return UserFactory(timezone=get_local_timezone())
