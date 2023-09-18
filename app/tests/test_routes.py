@@ -1,9 +1,13 @@
 """
 Test GET method for all the routes using TestClient
 """
+from unittest import mock
+
+import pytest
 from fastapi.testclient import TestClient
 
 from ..main import app
+from ..routers import utils
 
 client = TestClient(app)
 
@@ -18,15 +22,13 @@ def test_read_main():
     assert response.json() == "Welcome to whiskycito! 🥃"
 
 
-def test_get_beer():
+def assert_beer(response):
     """
-    Should be a random beer
-    :return: None
+    Test keys and values types for a beer expected response
+    :param response: Response
+    :return: None (or assert errors)
     """
     expected_keys = ["name", "tagline", "abv", "ibu", "food_pairing"]
-
-    response = client.get("/beer")
-    assert response.status_code == 200
     assert all(k in response.json() for k in expected_keys)
     assert isinstance(response.json()["name"], str)
     assert isinstance(response.json()["tagline"], str)
@@ -35,15 +37,13 @@ def test_get_beer():
     assert isinstance(response.json()["food_pairing"], list)
 
 
-def test_get_cocktail():
+def assert_cocktail(response):
     """
-    Should be a random cocktail
-    :return: None
+    Test keys and values types for a cocktail expected response
+    :param response: Response
+    :return: None (or assert errors)
     """
     expected_keys = ["name", "tagline", "ingredients", "instructions"]
-
-    response = client.get("/cocktail")
-    assert response.status_code == 200
     assert all(k in response.json() for k in expected_keys)
     assert isinstance(response.json()["name"], str)
     assert isinstance(response.json()["tagline"], str)
@@ -51,10 +51,42 @@ def test_get_cocktail():
     assert isinstance(response.json()["instructions"], str)
 
 
-def test_get_suggestion():
+def test_get_beer():
+    """
+    Should be a random beer
+    :return: None
+    """
+
+    response = client.get("/beer")
+    assert response.status_code == 200
+    assert_beer(response)
+
+
+def test_get_cocktail():
+    """
+    Should be a random cocktail
+    :return: None
+    """
+
+    response = client.get("/cocktail")
+    assert response.status_code == 200
+    assert_cocktail(response)
+
+
+@pytest.mark.parametrize(
+    "is_daytime_value",
+    [True, False],
+)
+def test_get_suggestion(is_daytime_value):
     """
     Should be a custom suggestion
     :return: None
     """
-    response = client.get("/suggestion")
-    assert response.status_code == 200
+    with mock.patch.object(utils, "is_daytime", return_value=is_daytime_value):
+        # TODO: fix patch
+        response = client.get("/suggestion")
+        assert response.status_code == 200
+        if is_daytime_value:
+            assert_beer(response)
+        else:
+            assert_cocktail(response)
