@@ -11,4 +11,4 @@ async def welcome():
     """
     :return:
     """
-    return "Welcome to whiskycito! 🥃"
+    return "Welcome to elixir! 🥃"

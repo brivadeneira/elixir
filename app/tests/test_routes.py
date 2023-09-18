@@ -19,7 +19,7 @@ def test_read_main():
     """
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == "Welcome to whiskycito! 🥃"
+    assert response.json() == "Welcome to elixir! 🥃"
 
 
 def assert_beer(response):
