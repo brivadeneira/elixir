@@ -5,7 +5,27 @@ import unittest
 
 from pydantic import ValidationError
 
-from app.factories import BeerFactory, CocktailFactory, DrinkFactory
+from app.factories import BeerFactory, CocktailFactory, DrinkFactory, UserFactory
+
+
+class TestUser(unittest.TestCase):
+    def test_valid_user(self):
+        """
+        Should be a valid user
+        """
+        user = UserFactory()
+        self.assertIsInstance(user.name, str)
+        self.assertIsInstance(user.timezone, str)
+
+    def test_wrong_types(self):
+        """
+        Test validation for name and tagline as numbers
+        """
+        with self.assertRaises(ValidationError):
+            UserFactory(name=-200)
+
+        with self.assertRaises(ValidationError):
+            UserFactory(timezone=-200)
 
 
 class TestDrink(unittest.TestCase):

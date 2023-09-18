@@ -6,6 +6,16 @@ from pydantic.dataclasses import dataclass
 
 
 @dataclass
+class User:
+    """
+    Model for users
+    """
+
+    name: str
+    timezone: str
+
+
+@dataclass
 class Drink:
     """
     Base drink model to be inherited by every needed one

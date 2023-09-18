@@ -4,8 +4,9 @@ Beer and Cocktail factories
 import random
 
 import factory
+import pytz
 
-from app.models import Beer, Cocktail, Drink
+from app.models import Beer, Cocktail, Drink, User
 
 food_names = [
     "Pizza",
@@ -19,6 +20,18 @@ food_names = [
     "Fries",
     "Soup",
 ]
+
+
+class UserFactory(factory.Factory):
+    """
+    For creating fake users
+    """
+
+    class Meta:
+        model = User
+
+    name = factory.Faker("name")
+    timezone = random.choice(pytz.all_timezones)
 
 
 class DrinkFactory(factory.Factory):

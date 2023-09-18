@@ -5,10 +5,40 @@ import os
 from datetime import datetime
 
 import pytz
+import requests
 from dotenv import load_dotenv
 from pytz.exceptions import UnknownTimeZoneError
+from requests import HTTPError, Timeout, TooManyRedirects
+
+from app.factories import UserFactory
 
 load_dotenv()
+
+RAND_USER_URL = "https://randomuser.me/api/"
+
+
+def get_random_user() -> UserFactory:
+    """
+    Build a random user from data
+    :return: (User)
+    """
+    try:
+        rand_user_resp = requests.get(RAND_USER_URL, timeout=30)
+        rand_user = rand_user_resp.json()["results"][0]
+        user_name, user_timezone = (
+            rand_user["name"]["first"],
+            rand_user["location"]["timezone"]["description"],
+        )
+        return UserFactory(name=user_name, timezone=user_timezone)
+    except (ConnectionError, HTTPError, Timeout, TooManyRedirects, KeyError):
+        return UserFactory(timezone=get_local_timezone())
+
+
+def get_local_timezone():
+    """
+    Self-explanatory
+    """
+    return datetime.now().astimezone().tzinfo
 
 
 def get_time_now(timezone):
@@ -44,7 +74,7 @@ def is_daytime(str_timezone: str = None, str_sunset_time: str = None) -> bool:
             pass
 
     if not timezone:
-        timezone = datetime.now().astimezone().tzinfo
+        timezone = get_local_timezone()
 
     time_now = get_time_now(timezone)
 
